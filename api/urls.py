@@ -1,11 +1,13 @@
 from django.conf.urls import url, include
+from rest_framework import routers
 
-from .api import MensagemResource, IdentidadeResource
+from .views import MensagemViewSet
+
+
+router = routers.DefaultRouter()
+router.register(r'msgs', MensagemViewSet)
 
 urlpatterns = [
-    url(r'^msgs/', MensagemResource.as_list(), name='listar-mensagens'),
-    url(r'^msgs/(?P<pk>\d+)/$', MensagemResource.as_detail(), name='mensagem-id'),
-
-    url(r'^idents/', IdentidadeResource.as_list(), name='listar-identidades'),
-    url(r'^idents/(?P<nome>[\w-]+)/$', IdentidadeResource.as_detail(), name='identidade-nome'),
+    url(r'^', include(router.urls)),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
