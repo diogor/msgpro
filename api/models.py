@@ -18,6 +18,9 @@ class Mensagem(models.Model):
     texto = models.TextField()
     data = models.DateTimeField(auto_now_add=True)
     validade = models.IntegerField(default=3)
+    
+    class Meta:
+        ordering = ('-data',)
 
     def __unicode__(self):
         return self.texto
