@@ -10,8 +10,20 @@ class MensagemSerializer(serializers.HyperlinkedModelSerializer):
         source='remetente',
         read_only=True
     )
-    sender = serializers.SlugField(source='remetente')
-    recipient = serializers.SlugField(source='destinatario')
+    sender = serializers.SlugRelatedField(
+        source='remetente',
+        many=False,
+        read_only=False,
+        queryset=Identidade.objects.all(),
+        slug_field='nome'
+     )
+    recipient = serializers.SlugRelatedField(
+        source='destinatario',
+        many=False,
+        read_only=False,
+        queryset=Identidade.objects.all(),
+        slug_field='nome'
+     )
     date = serializers.DateTimeField(source='data', read_only=True)
     text = serializers.CharField(source='texto')
     class Meta:
