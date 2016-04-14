@@ -128,3 +128,8 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 10,
     #'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',)
 }
+
+try:
+    from local_settings import *
+except ImportError:
+    pass
