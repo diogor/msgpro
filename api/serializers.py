@@ -16,7 +16,7 @@ class MensagemSerializer(serializers.HyperlinkedModelSerializer):
     text = serializers.CharField(source='texto')
     class Meta:
         model = Mensagem
-        fields = ('sender_url', 'sender', 'recipient', 'date', 'text')
+        fields = ('id', 'sender_url', 'sender', 'recipient', 'date', 'text')
 
 
 class IdentidadeSerializer(serializers.ModelSerializer):
