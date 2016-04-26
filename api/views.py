@@ -36,5 +36,5 @@ class MensagemList(generics.ListAPIView):
         This view should return a list of all the messages for
         the identity as determined by the nome portion of the URL.
         """
-        nome = self.kwargs['nome']
+        nome = self.kwargs.get('nome')
         return Mensagem.objects.filter(destinatario__nome=nome)
