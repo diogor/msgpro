@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Mensagem, Identidade, IdentidadeCompartilhada
+from .models import Mensagem, Identidade
 
 
 class MensagemSerializer(serializers.HyperlinkedModelSerializer):
@@ -26,9 +26,10 @@ class MensagemSerializer(serializers.HyperlinkedModelSerializer):
      )
     date = serializers.DateTimeField(source='data', read_only=True)
     text = serializers.CharField(source='texto')
+    type = serializers.CharField(source='tipo')
     class Meta:
         model = Mensagem
-        fields = ('id', 'sender_url', 'sender', 'recipient', 'date', 'text')
+        fields = ('id', 'sender_url', 'sender', 'recipient', 'date', 'type', 'text')
 
 
 class IdentidadeSerializer(serializers.ModelSerializer):
@@ -37,9 +38,3 @@ class IdentidadeSerializer(serializers.ModelSerializer):
         model = Identidade
         fields = ('name', 'pubkey')
 
-
-class IdentidadeCompartilhadaSerializer(serializers.ModelSerializer):
-    name = serializers.SlugField(source='nome')
-    class Meta:
-        model = IdentidadeCompartilhada
-        fields = ('name', 'pubkey', 'privkey')

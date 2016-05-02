@@ -1,13 +1,12 @@
 from django.conf.urls import url, include
 from rest_framework import routers
 
-from .views import MensagemViewSet, IdentidadeViewSet, IdentidadeCompartilhadaViewSet, MensagemList
+from .views import MensagemViewSet, IdentidadeViewSet, MensagemList
 
 
 router = routers.DefaultRouter()
 router.register(r'msgs', MensagemViewSet)
 router.register(r'idents', IdentidadeViewSet)
-router.register(r'shared-idents', IdentidadeCompartilhadaViewSet)
 
 
 urlpatterns = [

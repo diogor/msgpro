@@ -1,7 +1,7 @@
 from rest_framework import viewsets, mixins, filters, generics
 from rest_framework.decorators import list_route
 
-from .serializers import MensagemSerializer, IdentidadeSerializer, IdentidadeCompartilhadaSerializer
+from .serializers import MensagemSerializer, IdentidadeSerializer
 from .models import Mensagem, Identidade
 
 
@@ -28,18 +28,6 @@ class IdentidadeViewSet(mixins.CreateModelMixin,
     serializer_class = IdentidadeSerializer
     
     
-    class IdentidadeCompartilhadaViewSet(mixins.CreateModelMixin,
-                        mixins.RetrieveModelMixin,
-                        mixins.ListModelMixin,
-                        viewsets.GenericViewSet):
-    """
-    API endpoint that allows identities to be viewed or edited.
-    """
-    lookup_field = 'nome'
-    queryset = IdentidadeCompartilhada.objects.all()
-    serializer_class = IdentidadeCompartilhadaSerializer
-
-
 class MensagemList(generics.ListAPIView):
     serializer_class = MensagemSerializer
 

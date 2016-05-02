@@ -12,13 +12,13 @@ class Identidade(models.Model):
         return self.nome
 
 
-class IdentidadeCompartilhada(Identidade):
-    privkey = models.TextField()
+TIPO = (('msg', 'Mensagem'), ('grp', 'Convite'))
 
 
 class Mensagem(models.Model):
     remetente = models.ForeignKey(Identidade, related_name="caixa_de_saida")
     destinatario = models.ForeignKey(Identidade, related_name="caixa_de_entrada")
+    tipo = models.CharField(max_length=3, choices=TIPO, default='msg')
     texto = models.TextField()
     data = models.DateTimeField(auto_now_add=True)
     validade = models.IntegerField(default=3)
