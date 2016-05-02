@@ -12,6 +12,10 @@ class Identidade(models.Model):
         return self.nome
 
 
+class IdentidadeCompartilhada(Identidade):
+    privkey = models.TextField()
+
+
 class Mensagem(models.Model):
     remetente = models.ForeignKey(Identidade, related_name="caixa_de_saida")
     destinatario = models.ForeignKey(Identidade, related_name="caixa_de_entrada")

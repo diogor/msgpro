@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Mensagem, Identidade
+from .models import Mensagem, Identidade, IdentidadeCompartilhada
 
 
 class MensagemSerializer(serializers.HyperlinkedModelSerializer):
@@ -36,3 +36,10 @@ class IdentidadeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Identidade
         fields = ('name', 'pubkey')
+
+
+class IdentidadeCompartilhadaSerializer(serializers.ModelSerializer):
+    name = serializers.SlugField(source='nome')
+    class Meta:
+        model = IdentidadeCompartilhada
+        fields = ('name', 'pubkey', 'privkey')
