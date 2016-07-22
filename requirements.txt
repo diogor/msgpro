@@ -2,3 +2,6 @@ Django
 djangorestframework
 django-cors-headers
 newrelic
+asgi-redis
+channels
+daphne
