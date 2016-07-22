@@ -1,26 +1,46 @@
+import json
+from random import randint
+from time import time
 from channels import Group
 from channels.sessions import channel_session
+
+from api.models import Identidade
 
 # Connected to websocket.connect
 @channel_session
 def ws_connect(message):
-    # Work out room name from path (ignore slashes)
-    room = message.content['path'].strip("/")
-    # Save room in session and add us to the group
+    room = "{}.{}".format(str(time()), str(randint(100000, 999999)))
     message.channel_session['room'] = room
-    Group("chat-%s" % room).add(message.reply_channel)
+    Group("%s" % room).add(message.reply_channel)
 
-# Connected to websocket.receive
+    msg = json.dumps({"CH": room})
+    Group("%s" % room).send({"text": msg})
+
+
 @channel_session
 def ws_message(message):
-    Group("chat-%s" % message.channel_session['room']).send({
-        "text": message['text'],
-    })
+    room = message.channel_session['room']
+    mensagem = json.loads(message.get('text'))
+    print mensagem
+    tipo = mensagem.get('type')
+
+    if tipo == 'ident':
+        print "d"
+        nome = mensagem.get('name')
+        pubkey = mensagem.get('pubkey')
+        ident, criado = Identidade.objects.get_or_create(nome=nome, pubkey=pubkey)
+        if criado:
+            msg = {"type": "newuser", "name": nome}
+        else:
+            msg = {"type": "existinguser", "name": nome}
+
+        Group("%s" % room).send({"text": json.dumps(msg)})
+
 
 # Connected to websocket.disconnect
 @channel_session
 def ws_disconnect(message):
     try:
-        Group("chat-%s" % message.channel_session['room']).discard(message.reply_channel)
+        Group("%s" % message.channel_session['room']).discard(message.reply_channel)
     except KeyError:
         pass
