@@ -15,7 +15,7 @@ def ws_connect(message):
     message.channel_session['room'] = room
     Group("%s" % room).add(message.reply_channel)
 
-    msg = json.dumps({"001": "Welcome."})
+    msg = json.dumps({"type": "srv", "text": "Welcome!", "code": 1})
     Group("%s" % room).send({"text": msg})
 
 
