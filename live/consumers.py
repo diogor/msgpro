@@ -20,4 +20,7 @@ def ws_message(message):
 # Connected to websocket.disconnect
 @channel_session
 def ws_disconnect(message):
-    Group("chat-%s" % message.channel_session['room']).discard(message.reply_channel)
+    try:
+        Group("chat-%s" % message.channel_session['room']).discard(message.reply_channel)
+    except KeyError:
+        pass
