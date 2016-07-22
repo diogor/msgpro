@@ -28,7 +28,7 @@ def ws_message(message):
     if tipo == 'id':
         nome = mensagem.get('name')
         pubkey = mensagem.get('pubkey')
-        ident, criado = Identidade.objects.get_or_create(nome=nome, pubkey=pubkey)
+        ident, criado = Identidade.objects.get_or_create(nome=nome, pubkey=pubkey, canal=room)
         ident.online = True
         ident.save()
         message.channel_session['ident'] = ident
