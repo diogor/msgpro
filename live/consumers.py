@@ -26,6 +26,7 @@ def ws_message(message):
     tipo = mensagem.get('type')
 
     if tipo == 'id':
+        Group("%s" % room).send({"text": "bla"})
         nome = mensagem.get('name')
         pubkey = mensagem.get('pubkey')
         ident, criado = Identidade.objects.get_or_create(nome=nome, pubkey=pubkey, canal=room)
