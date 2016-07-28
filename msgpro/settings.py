@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+ADMINS = [('Diogo Lima', 'diogo@dr6.com.br')]
 
 # Application definition
 
