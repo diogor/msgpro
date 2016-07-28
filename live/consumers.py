@@ -26,23 +26,28 @@ def ws_message(message):
     tipo = mensagem.get('type')
 
     if tipo == 'id':
-        Group("%s" % room).send({"text": "bla"})
         nome = mensagem.get('name')
         pubkey = mensagem.get('pubkey')
-        ident, criado = Identidade.objects.get_or_create(nome=nome, pubkey=pubkey, canal=room)
-        ident.online = True
-        ident.save()
-        message.channel_session['ident'] = ident
-        if criado:
-            msg = {"type": "nu", "name": nome}
+        try:
+            ident = Identidade.objects.get(nome=nome)
+        except Identidade.DoesNotExist:
+            ident = False
+
+        if not ident:
+            ident = Identidade.objects.create(nome=nome, pubkey=pubkey, canal=room)
+            ident.online = True
+            ident.save()
+            message.channel_session['ident'] = ident.id
+            msg = {"type": "usr", "name": nome, "code": 0}
         else:
-            msg = {"type": "eu", "name": nome}
+            msg = {"type": "usr", "name": nome, "code": 1}
 
         Group("%s" % room).send({"text": json.dumps(msg)})
 
     if tipo == 'msg':
         destinatario = mensagem.get('recipient')
-        remetente = message.channel_session.get('ident')
+        remetente_id = message.channel_session.get('ident')
+        remetente = Identidade.objects.get(id=remetente_id)
         text = mensagem.get('text')
         if remetente:
             nova = Mensagem.objects.create(remetente=remetente.nome, destinatario=destinatario, texto=text)
@@ -60,7 +65,8 @@ def ws_message(message):
 
 @channel_session
 def ws_disconnect(message):
-    ident = message.channel_session.get('ident')
+    ident_id = message.channel_session.get('ident')
+    ident = Identidade.objects.get(id=ident_id)
     if ident:
         ident.online = False
         ident.save()
