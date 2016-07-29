@@ -1,8 +1,13 @@
 from __future__ import unicode_literals
 
-from datetime import datetime, timedelta
+from datetime import timedelta
 
+from django.utils import timezone
+from django.conf import settings
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
 from django.db import models
+
 
 class Identidade(models.Model):
     nome = models.SlugField(unique=True)
@@ -23,7 +28,7 @@ class Mensagem(models.Model):
     tipo = models.CharField(max_length=3, default='msg')
     texto = models.TextField()
     data = models.DateTimeField(auto_now_add=True)
-    validade = models.IntegerField(default=3)
+    validade = models.DateTimeField(editable=False)
 
     class Meta:
         ordering = ('-data',)
@@ -32,5 +37,9 @@ class Mensagem(models.Model):
         return self.texto
 
     def is_expired(self):
-        prazo = self.data + timedelta(days=self.validade)
-        return datetime.now() > prazo
+        return timezone.now() > self.validade
+
+
+@receiver(pre_save, sender=Mensagem)
+def set_expiracao(sender, instance, **kwargs):
+    instance.validade = timezone.now() + timedelta(days=settings.VALIDADE_MENSAGEM)

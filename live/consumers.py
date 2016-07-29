@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import json
 from random import randint
 from time import time
@@ -38,9 +39,9 @@ def ws_message(message):
             ident.online = True
             ident.save()
             message.channel_session['ident'] = ident.id
-            msg = {"type": "usr", "name": nome, "code": 0}
+            msg = {"type": "usr", "name": nome, "code": 0, "text": "Identidade criada."}
         else:
-            msg = {"type": "usr", "name": nome, "code": 1}
+            msg = {"type": "usr", "name": nome, "code": 1, "text": "Identidade existente."}
 
         Group("%s" % room).send({"text": json.dumps(msg)})
 
@@ -52,14 +53,17 @@ def ws_message(message):
         if remetente:
             nova = Mensagem.objects.create(remetente=remetente.nome, destinatario=destinatario, texto=text)
 
-            id_remetente = Identidade.objects.get(nome=destinatario)
-
-            if id_remetente.is_online():
-                canal_dest = id_remetente.canal
-                msg = serializers.serialize('json', nova)
-                Group(canal_dest).send({"text": msg})
-            else:
-                msg = {"type": 'str', "recipient": id_remetente.nome, "text": nova.texto}
+            try:
+                id_remetente = Identidade.objects.get(nome=destinatario)
+                if id_remetente.is_online():
+                    canal_dest = id_remetente.canal
+                    msg = serializers.serialize('json', nova)
+                    Group(canal_dest).send({"text": msg})
+                else:
+                    msg = {"type": 'str', "recipient": id_remetente.nome, "text": nova.texto}
+                    Group(room).send({"text": json.dumps(msg)})
+            except Identidade.DoesNotExist:
+                msg = {"type": "usr", "name": destinatario, "code": 2, "text": "O usuário não existe."}
                 Group(room).send({"text": json.dumps(msg)})
 
 

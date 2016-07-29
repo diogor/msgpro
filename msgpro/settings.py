@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Django settings for msgpro project.
 
@@ -28,6 +29,9 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 ADMINS = [('Diogo Lima', 'diogo@dr6.com.br')]
+
+# Tempo de expiração da mensagem em dias
+VALIDADE_MENSAGEM = 3
 
 # Application definition
 
