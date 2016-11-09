@@ -61,8 +61,8 @@ def ws_message(message):
             nova = Mensagem.objects.create(remetente=remetente, destinatario=id_destinatario, texto=text)
             if id_destinatario.is_online():
                 canal_dest = id_destinatario.canal
-                msg = serializers.serialize('json', nova)
-                Group(canal_dest).send({"text": msg})
+                msg = {"type": 'msg', "sender": nova.remetente.nome, "text": nova.texto, "date": nova.data}
+                Group(canal_dest).send({"text": json.dumps(msg)})
             else:
                 msg = {"type": 'str', "recipient": id_destinatario.nome, "text": nova.texto}
                 Group(room).send({"text": json.dumps(msg)})
