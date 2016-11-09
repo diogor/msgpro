@@ -38,32 +38,33 @@ def ws_message(message):
             ident = Identidade.objects.create(nome=nome, pubkey=pubkey, canal=room)
             ident.online = True
             ident.save()
-            message.channel_session['ident'] = ident.id
             msg = {"type": "usr", "name": nome, "code": 0, "text": "Identidade criada."}
         else:
             msg = {"type": "usr", "name": nome, "code": 1, "text": "Identidade existente."}
 
+        message.channel_session['ident'] = ident.id
         Group("%s" % room).send({"text": json.dumps(msg)})
 
     if tipo == 'msg':
         destinatario = mensagem.get('recipient')
         remetente_id = message.channel_session.get('ident')
         remetente = Identidade.objects.get(id=remetente_id)
+
+        try:
+            id_destinatario = Identidade.objects.get(nome=destinatario)
+        except Identidade.DoesNotExist:
+            msg = {"type": "usr", "name": destinatario, "code": 2, "text": "O usuário não existe."}
+            Group(room).send({"text": json.dumps(msg)})
+
         text = mensagem.get('text')
         if remetente:
-            nova = Mensagem.objects.create(remetente=remetente.nome, destinatario=destinatario, texto=text)
-
-            try:
-                id_remetente = Identidade.objects.get(nome=destinatario)
-                if id_remetente.is_online():
-                    canal_dest = id_remetente.canal
-                    msg = serializers.serialize('json', nova)
-                    Group(canal_dest).send({"text": msg})
-                else:
-                    msg = {"type": 'str', "recipient": id_remetente.nome, "text": nova.texto}
-                    Group(room).send({"text": json.dumps(msg)})
-            except Identidade.DoesNotExist:
-                msg = {"type": "usr", "name": destinatario, "code": 2, "text": "O usuário não existe."}
+            nova = Mensagem.objects.create(remetente=remetente, destinatario=id_destinatario, texto=text)
+            if id_destinatario.is_online():
+                canal_dest = id_destinatario.canal
+                msg = serializers.serialize('json', nova)
+                Group(canal_dest).send({"text": msg})
+            else:
+                msg = {"type": 'str', "recipient": id_destinatario.nome, "text": nova.texto}
                 Group(room).send({"text": json.dumps(msg)})
 
 
