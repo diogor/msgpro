@@ -36,13 +36,13 @@ def ws_message(message):
 
         if not ident:
             ident = Identidade.objects.create(nome=nome, pubkey=pubkey, canal=room)
-            ident.online = True
-            ident.save()
             msg = {"type": "usr", "name": nome, "code": 0, "text": "Identidade criada."}
         else:
             msg = {"type": "usr", "name": nome, "code": 1, "text": "Identidade existente."}
 
         message.channel_session['ident'] = ident.id
+        ident.online = True
+        ident.save()
         Group("%s" % room).send({"text": json.dumps(msg)})
 
     if tipo == 'msg':
