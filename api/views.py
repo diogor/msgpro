@@ -26,8 +26,19 @@ class IdentidadeViewSet(mixins.CreateModelMixin,
     lookup_field = 'nome'
     queryset = Identidade.objects.all()
     serializer_class = IdentidadeSerializer
-    
-    
+
+class IdentidadeSearch(generics.ListAPIView):
+    serializer_class = IdentidadeSerializer
+
+    def get_queryset(self):
+        """
+        This view should return a list of all the messages for
+        the identity as determined by the nome portion of the URL.
+        """
+        nome = self.kwargs.get('q')
+        return Identidade.objects.filter(nome_in=nome)
+
+
 class MensagemList(generics.ListAPIView):
     serializer_class = MensagemSerializer
 
