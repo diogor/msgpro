@@ -36,7 +36,7 @@ class IdentidadeSearch(generics.ListAPIView):
         the identity as determined by the nome portion of the URL.
         """
         nome = self.kwargs.get('q')
-        return Identidade.objects.filter(nome_in=nome)
+        return Identidade.objects.filter(nome__in=nome)
 
 
 class MensagemList(generics.ListAPIView):
