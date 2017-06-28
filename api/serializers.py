@@ -36,5 +36,5 @@ class IdentidadeSerializer(serializers.ModelSerializer):
     name = serializers.SlugField(source='nome')
     class Meta:
         model = Identidade
-        fields = ('name', 'pubkey')
+        fields = ('name', 'pubkey', 'description')
 
