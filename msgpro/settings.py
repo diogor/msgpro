@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
 import os
-import urlparse
+from urllib import parse as urlparse
 import dj_database_url
 from decouple import config
 
