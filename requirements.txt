@@ -1,6 +1,8 @@
 Django
 djangorestframework
+dj-database-url
 django-cors-headers
 django-redis
 django-redis-cache
+gunicorn
 python-decouple
