@@ -3,4 +3,5 @@ djangorestframework
 dj-database-url
 django-cors-headers
 gunicorn
+psycopg2
 python-decouple
