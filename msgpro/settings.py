@@ -28,7 +28,6 @@ SECRET_KEY = config('SECRET_KEY', default="6rbzhzz^r4ex!=491%g6_=mzyv0@e#!e#7g5i
 DEBUG = config('DEBUG', default=False, cast=bool)
 EMAIL_HOST = config('EMAIL_HOST', default='localhost')
 EMAIL_PORT = config('EMAIL_PORT', default=25, cast=int)
-REDIS_URL = config("REDIS_URL")
 DATABASE_URL = config("DATABASE_URL")
 
 ALLOWED_HOSTS = ['*']
@@ -151,22 +150,6 @@ REST_FRAMEWORK = {
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = False
 
-
-# Cache
-# http://redis.io/download
-REDIS_URL = urlparse.urlparse(REDIS_URL)
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "{0}:{1}".format(REDIS_URL.hostname, REDIS_URL.port),
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-            "COMPRESSOR": "django_redis.compressors.zlib.ZlibCompressor",
-            "PASSWORD": REDIS_URL.password,
-            "DB": 0,
-        }
-    }
-}
 
 try:
     from local_settings import *
