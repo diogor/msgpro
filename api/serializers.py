@@ -38,3 +38,10 @@ class IdentidadeSerializer(serializers.ModelSerializer):
         model = Identidade
         fields = ('name', 'pubkey', 'description', 'verified', 'compromised')
 
+class IdentidadeCreateSerializer(serializers.ModelSerializer):
+    name = serializers.SlugField(source='nome')
+    image = serializers.ImageField(source='imagem')
+    class Meta:
+        model = Identidade
+        fields = ('name', 'pubkey', 'description', 'image')
+

@@ -1,7 +1,7 @@
 from rest_framework import viewsets, mixins, filters, generics
 from rest_framework.decorators import list_route
 
-from .serializers import MensagemSerializer, IdentidadeSerializer
+from .serializers import MensagemSerializer, IdentidadeSerializer, IdentidadeCreateSerializer
 from .models import Mensagem, Identidade
 
 
@@ -16,8 +16,7 @@ class MensagemViewSet(mixins.CreateModelMixin,
     serializer_class = MensagemSerializer
 
 
-class IdentidadeViewSet(mixins.CreateModelMixin,
-                        mixins.RetrieveModelMixin,
+class IdentidadeViewSet(mixins.RetrieveModelMixin,
                         mixins.ListModelMixin,
                         viewsets.GenericViewSet):
     """
@@ -26,6 +25,12 @@ class IdentidadeViewSet(mixins.CreateModelMixin,
     lookup_field = 'nome'
     queryset = Identidade.objects.all()
     serializer_class = IdentidadeSerializer
+
+class IdentidadeCreate(mixins.CreateModelMixin, generics.GenericAPIView):
+    serializer_class = IdentidadeCreateSerializer
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
 
 class IdentidadeSearch(generics.ListAPIView):
     serializer_class = IdentidadeSerializer
