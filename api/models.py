@@ -22,7 +22,7 @@ class Identidade(models.Model):
     compromised = models.BooleanField(default=False)
     imagem = models.ImageField(blank=True, upload_to=upload_to)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.nome
 
     def is_online(self):
@@ -40,7 +40,7 @@ class Mensagem(models.Model):
     class Meta:
         ordering = ('-data',)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.texto
 
     def is_expired(self):
