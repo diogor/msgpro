@@ -15,7 +15,7 @@ def upload_to(instance, filename):
 
 class Identidade(models.Model):
     nome = models.SlugField(unique=True)
-    description = models.TextField(blank=True)
+    description = models.TextField()
     pubkey = models.TextField()
     canal = models.CharField(max_length=20, unique=True)
     online = models.BooleanField(default=False)
