@@ -9,12 +9,19 @@ from django.dispatch import receiver
 from django.db import models
 
 
+def upload_to(instance, filename):
+	return 'veri/%s/%s' % (instance.nome, filename)
+
+
 class Identidade(models.Model):
     nome = models.SlugField(unique=True)
     description = models.TextField(blank=True)
     pubkey = models.TextField()
     canal = models.CharField(max_length=20, unique=True)
     online = models.BooleanField(default=False)
+    verified = models.BooleanField(default=False)
+    compromised = models.BooleanField(default=False)
+    imagem = models.ImageField(blank=True, upload_to=upload_to)
 
     def __unicode__(self):
         return self.nome
