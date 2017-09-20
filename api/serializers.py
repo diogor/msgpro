@@ -17,9 +17,9 @@ class MensagemSerializer(serializers.HyperlinkedModelSerializer):
         queryset=Identidade.objects.all(),
         slug_field='nome'
      )
-    recipient = serializers.SlugRelatedField(
-        source='destinatario',
-        many=False,
+    recipients = serializers.SlugRelatedField(
+        source='destinatarios',
+        many=True,
         read_only=False,
         queryset=Identidade.objects.all(),
         slug_field='nome'
@@ -29,7 +29,7 @@ class MensagemSerializer(serializers.HyperlinkedModelSerializer):
     type = serializers.CharField(source='tipo')
     class Meta:
         model = Mensagem
-        fields = ('id', 'sender_url', 'sender', 'recipient', 'date', 'type', 'text')
+        fields = ('id', 'sender_url', 'sender', 'recipients', 'date', 'type', 'text')
 
 
 class IdentidadeSerializer(serializers.ModelSerializer):
