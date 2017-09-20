@@ -31,7 +31,7 @@ class Identidade(models.Model):
 
 class Mensagem(models.Model):
     remetente = models.ForeignKey(Identidade, related_name="caixa_de_saida")
-    destinatario = models.ForeignKey(Identidade, related_name="caixa_de_entrada")
+    destinatarios = models.ManyToManyField(Identidade, related_name="caixa_de_entrada")
     tipo = models.CharField(max_length=3, default='msg')
     texto = models.TextField()
     data = models.DateTimeField(auto_now_add=True)
