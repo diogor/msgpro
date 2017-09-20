@@ -26,22 +26,21 @@ class MensagemSerializer(serializers.HyperlinkedModelSerializer):
      )
     date = serializers.DateTimeField(source='data', read_only=True)
     text = serializers.CharField(source='texto')
-    type = serializers.CharField(source='tipo')
     class Meta:
         model = Mensagem
-        fields = ('id', 'sender_url', 'sender', 'recipients', 'date', 'type', 'text')
+        fields = ('id', 'sender_url', 'sender', 'recipients', 'date', 'text')
 
 
 class IdentidadeSerializer(serializers.ModelSerializer):
     name = serializers.SlugField(source='nome')
     class Meta:
         model = Identidade
-        fields = ('name', 'pubkey', 'description', 'verified', 'compromised')
+        fields = ('name', 'pubkey', 'description', 'verified', 'compromised', 'shared')
 
 class IdentidadeCreateSerializer(serializers.ModelSerializer):
     name = serializers.SlugField(source='nome')
     image = serializers.ImageField(source='imagem', use_url=False)
     class Meta:
         model = Identidade
-        fields = ('name', 'pubkey', 'description', 'image')
+        fields = ('name', 'pubkey', 'description', 'image', 'shared')
 

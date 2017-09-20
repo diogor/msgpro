@@ -17,6 +17,7 @@ class Identidade(models.Model):
     nome = models.SlugField(unique=True)
     description = models.TextField()
     pubkey = models.TextField()
+    shared = models.BooleanField(default=False, editable=False)
     online = models.BooleanField(default=False)
     verified = models.BooleanField(default=False)
     compromised = models.BooleanField(default=False)
@@ -32,7 +33,6 @@ class Identidade(models.Model):
 class Mensagem(models.Model):
     remetente = models.ForeignKey(Identidade, related_name="caixa_de_saida")
     destinatarios = models.ManyToManyField(Identidade, related_name="caixa_de_entrada")
-    tipo = models.CharField(max_length=3, default='msg')
     texto = models.TextField()
     data = models.DateTimeField(auto_now_add=True)
     validade = models.DateTimeField(editable=False)
