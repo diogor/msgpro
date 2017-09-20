@@ -28,7 +28,7 @@ SECRET_KEY = config('SECRET_KEY', default="6rbzhzz^r4ex!=491%g6_=mzyv0@e#!e#7g5i
 DEBUG = config('DEBUG', default=True, cast=bool)
 EMAIL_HOST = config('EMAIL_HOST', default='localhost')
 EMAIL_PORT = config('EMAIL_PORT', default=25, cast=int)
-DATABASE_URL = config("DATABASE_URL")
+DATABASE_URL = config("DATABASE_URL", default='sqlite:///db.sqlite3')
 
 ALLOWED_HOSTS = ['*']
 
@@ -136,8 +136,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATIC_URL = '/static/'
+STATIC_ROOT = config('STATIC_ROOT', default=os.path.join(BASE_DIR, 'staticfiles'))
+STATIC_URL = config('STATIC_URL', default='/static/')
 
 # Rest framework
 REST_FRAMEWORK = {
