@@ -53,4 +53,4 @@ class MensagemList(generics.ListAPIView):
         the identity as determined by the nome portion of the URL.
         """
         nome = self.kwargs.get('nome')
-        return Mensagem.objects.filter(destinatario__nome=nome)
+        return Mensagem.objects.filter(destinatarios__nome=nome)
