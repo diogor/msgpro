@@ -10,7 +10,7 @@ from django.db import models
 
 
 def upload_to(instance, filename):
-	return 'veri/%s/%s' % (instance.nome, filename)
+    return 'veri/%s/%s' % (instance.nome, filename)
 
 
 class Identidade(models.Model):
