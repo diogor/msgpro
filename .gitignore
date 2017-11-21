@@ -70,3 +70,4 @@ target/
 local_settings.py
 .DS_Store
 dump.rdb
+veri/

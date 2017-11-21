@@ -1,7 +1,7 @@
 from django.conf.urls import url, include
 from rest_framework import routers
 
-from .views import MensagemViewSet, IdentidadeViewSet, MensagemList, IdentidadeSearch, IdentidadeCreate
+from .views import MensagemViewSet, IdentidadeViewSet, MensagemList, IdentidadeSearch
 
 
 router = routers.DefaultRouter()
@@ -14,5 +14,4 @@ urlpatterns = [
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^inbox/(?P<nome>[\w-]+)/$', MensagemList.as_view()),
     url(r'^search/ident/(?P<q>[\w-]+)/$', IdentidadeSearch.as_view()),
-    url(r'^new/ident/$', IdentidadeCreate.as_view()),
 ]

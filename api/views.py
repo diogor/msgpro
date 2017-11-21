@@ -5,6 +5,18 @@ from .serializers import MensagemSerializer, IdentidadeSerializer, IdentidadeCre
 from .models import Mensagem, Identidade
 
 
+class MultiSerializerViewSet(mixins.CreateModelMixin,
+                        mixins.RetrieveModelMixin,
+                        mixins.ListModelMixin,
+                        viewsets.GenericViewSet):
+    serializers = { 
+        'default': None,
+    }
+
+    def get_serializer_class(self):
+            return self.serializers.get(self.action,
+                        self.serializers['default'])
+
 class MensagemViewSet(mixins.CreateModelMixin,
                         mixins.RetrieveModelMixin,
                         mixins.ListModelMixin,
@@ -16,21 +28,22 @@ class MensagemViewSet(mixins.CreateModelMixin,
     serializer_class = MensagemSerializer
 
 
-class IdentidadeViewSet(mixins.RetrieveModelMixin,
-                        mixins.ListModelMixin,
-                        viewsets.GenericViewSet):
+class IdentidadeViewSet(MultiSerializerViewSet):
     """
     API endpoint that allows identities to be viewed or edited.
     """
     lookup_field = 'nome'
     queryset = Identidade.objects.all()
-    serializer_class = IdentidadeSerializer
-
-class IdentidadeCreate(mixins.CreateModelMixin, generics.GenericAPIView):
-    serializer_class = IdentidadeCreateSerializer
-
+    
+    serializers = {
+        'list': IdentidadeSerializer,
+        'create': IdentidadeCreateSerializer,
+        'default': IdentidadeSerializer,
+    }
+    
     def post(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)
+    
 
 class IdentidadeSearch(generics.ListAPIView):
     serializer_class = IdentidadeSerializer
