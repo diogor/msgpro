@@ -39,7 +39,7 @@ class IdentidadeSerializer(serializers.ModelSerializer):
 
 class IdentidadeCreateSerializer(serializers.ModelSerializer):
     name = serializers.SlugField(source='nome')
-    image = serializers.ImageField(source='imagem', use_url=False)
+    image = serializers.ImageField(source='imagem', use_url=False, required=False)
     class Meta:
         model = Identidade
         fields = ('name', 'pubkey', 'description', 'image', 'shared')
