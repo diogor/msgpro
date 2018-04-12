@@ -32,7 +32,7 @@ class Identidade(models.Model):
 
 class Mensagem(models.Model):
     remetente = models.ForeignKey(Identidade, related_name="caixa_de_saida", on_delete=models.CASCADE)
-    destinatarios = models.ManyToManyField(Identidade, related_name="caixa_de_entrada", on_delete=models.CASCADE)
+    destinatarios = models.ManyToManyField(Identidade, related_name="caixa_de_entrada")
     texto = models.TextField()
     data = models.DateTimeField(auto_now_add=True)
     validade = models.DateTimeField(editable=False)
