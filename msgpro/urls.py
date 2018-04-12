@@ -20,5 +20,5 @@ from api import urls as api_urls
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^api/', include(api_urls,  namespace="api")),
+    url(r'^api/', include((api_urls, 'api'),  namespace="api")),
 ]
