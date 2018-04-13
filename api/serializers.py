@@ -24,8 +24,12 @@ class MensagemSerializer(serializers.HyperlinkedModelSerializer):
         queryset=Identidade.objects.all(),
         slug_field='nome'
      )
-    date = serializers.DateTimeField(source='data', read_only=True)
+    date = serializers.SerializerMethodField()
     text = serializers.CharField(source='texto')
+
+    def get_date(self, obj):
+        return dateformat(obj.data, 'U')
+
     class Meta:
         model = Mensagem
         fields = ('id', 'sender_url', 'sender', 'recipients', 'date', 'text')
