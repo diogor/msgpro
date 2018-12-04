@@ -1,2 +1,2 @@
-release: python manage.py migrate
-web: gunicorn msgpro.wsgi --log-file -
+release: ./release-tasks.sh
+web: gunicorn msgpro.wsgi
